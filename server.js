@@ -8,8 +8,15 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
+});
+
+app.get(["/app.js", "/styles.css"], (req, res) => {
+  res.sendFile(path.join(__dirname, req.path));
+});
 
 // rooms.get(roomId) = { videoId, title, isPlaying, positionSec, updatedAt, hostId }
 const rooms = new Map();
